@@ -1,0 +1,109 @@
+﻿@model kgang.web.Models.PostsModel
+<h2>Posts</h2>
+
+@if (ViewBag.Base64String != null)
+{
+    <hr />
+    <img alt="" src="@ViewBag.Base64String" style="height:100px;width:100px;" />
+}
+
+@using (Html.BeginForm("SavePost", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-4">
+
+            <div class="form-group">
+
+                @Html.DropDownListFor(model => model.Name, Model.Users.Select(x => new SelectListItem { Text = x.Name, Value = x.ImagePathBase64 }), "Please Select", new { onchange = "document.location.href = '/home/UserChanged?id=' + this.options[this.selectedIndex].innerHTML;" })
+
+            </div>
+
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("AddPost", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    Model.Name = ViewBag.Message;
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                Current User:<br />
+                @Html.TextBoxFor(model => model.Name, new { @readonly = "readonly", @Id = "txtCurrentUser" });
+                <br />Post:<br />
+                @Html.TextAreaFor(model => model.Post);
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Post" class="btn btn-default" />
+            </div>
+        </div>
+
+
+    </div>
+
+
+}
+
+
+
+
+    <table>
+        @foreach (var post in Model.Posts)
+        {
+            <tr>
+                <td style="background-color: grey;">
+                    <img alt="" src="@post.User.ImagePathBase64" style="height:100px;width:100px;" />
+                </td>
+                <td style="background-color: grey;">
+                    <b>@post.User.Name</b> - @post.Content <br />
+                    @post.Date
+                </td>
+            </tr>
+            
+
+            foreach (var comment in post.Comments)
+            {
+                <tr>
+                    <td style="background-color: lightblue;padding-left:100px">
+                        <img alt="" src="@post.User.ImagePathBase64" style="height:100px;width:100px" />
+                    </td>
+                    <td style="background-color: lightblue;width:100%">
+                        <b>@comment.User.Name</b> - @comment.Content
+                        @comment.Date
+
+                    </td>
+                </tr>
+
+
+             }
+
+                    var txtComment = "txtComment-" + post.Id;
+
+            <tr>
+                <td colspan="2">
+
+
+                    <input type="text" id="@txtComment" value="@Model.Comment">
+
+
+
+                    <input type="submit" value="Add" class="btn btn-default" onclick="save(@post.Id, '@Model.Name','@txtComment')" />
+
+                    <input type="submit" value="AddC" class="btn btn-default" onclick="document.location.href = '/home/AddComment?postId=@post.Id" />
+
+                </td>
+            </tr>
+        }
+    </table>
+
+    <script>
+    function save(postId, name, comment) {
+        document.location.href = '/home/AddComment?postId=' + postId + '&comment=' + document.getElementById(comment).value + '&name=' + document.getElementById('txtCurrentUser').value;
+    }
+    </script>
+
+
