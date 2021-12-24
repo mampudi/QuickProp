@@ -81,20 +81,12 @@
 
              }
 
-                    var txtComment = "txtComment-" + post.Id;
+            var txtComment = "txtComment-" + post.Id;
 
             <tr>
                 <td colspan="2">
-
-
                     <input type="text" id="@txtComment" value="@Model.Comment">
-
-
-
                     <input type="submit" value="Add" class="btn btn-default" onclick="save(@post.Id, '@Model.Name','@txtComment')" />
-
-                    <input type="submit" value="AddC" class="btn btn-default" onclick="document.location.href = '/home/AddComment?postId=@post.Id" />
-
                 </td>
             </tr>
         }
