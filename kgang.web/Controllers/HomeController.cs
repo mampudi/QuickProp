@@ -69,7 +69,7 @@ namespace kgang.web.Controllers
 
                 foreach (var comment in item.Comments)
                 {
-                    post.Comments.Add(new PostModel { Content = comment.Content, Date = comment.DateCreated, User = new UserModel { Name = item.UserName, ImagePathBase64 = item.Picture } });
+                    post.Comments.Add(new PostModel { Content = comment.Content, Date = comment.DateCreated, User = new UserModel { Name = comment.UserName, ImagePathBase64 = comment.Picture } });
                 }
 
                 postsModel.Posts.Add(post);
